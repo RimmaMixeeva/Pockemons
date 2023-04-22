@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModelProvider
 import com.mr.pockemons.data.API.ApiInterface
-import com.mr.pockemons.domain.model.PockemonList
 import com.mr.pockemons.ui.theme.PockemonsTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,27 +24,13 @@ import retrofit2.Response
 class MainActivity : ComponentActivity() {
     lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
-        var list: List<PockemonList>
-
         super.onCreate(savedInstanceState)
-        Log.i("presentation", "Activity created")
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
-        val apiInterface = ApiInterface.create()
-        CoroutineScope(Dispatchers.IO).launch {
-            val product = apiInterface.getPockemons()
-            Log.i("Aaaaaaaa", product.toString())
-        }
 
         setContent {
             PockemonsTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+
             }
         }
     }
