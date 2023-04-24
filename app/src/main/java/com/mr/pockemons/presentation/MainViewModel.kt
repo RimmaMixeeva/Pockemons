@@ -55,5 +55,4 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
     }
-
 }
