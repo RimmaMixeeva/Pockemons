@@ -75,7 +75,7 @@ dependencies {
     //Paging
     implementation "androidx.paging:paging-runtime-ktx:3.1.1"
     //for images
-    implementation "com.github.bumptech.glide:glide:4.12.0"
+    implementation "io.coil-kt:coil-compose:2.2.0"
     //navigation
     implementation "androidx.navigation:navigation-compose:2.5.3"
 

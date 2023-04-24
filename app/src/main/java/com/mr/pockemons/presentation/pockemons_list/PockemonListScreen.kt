@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.mr.pockemons.presentation.MainViewModel
 import com.mr.pockemons.presentation.navigation.Screens
-import kotlinx.coroutines.delay
 
 
 @Composable
@@ -35,11 +34,6 @@ fun PockemonListScreen(navController: NavController, viewModel: MainViewModel) {
             } else {
                 Text(text = "LOADING..." )
             }
-        }
-
-        LaunchedEffect(Unit) {
-            delay(10000L)
-              checkTheNet = true
         }
     }
     else {
