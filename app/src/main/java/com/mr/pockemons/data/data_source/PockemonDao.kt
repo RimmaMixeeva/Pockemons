@@ -14,7 +14,7 @@ interface PockemonDao {
     fun getAllPockemons(): LiveData<List<PockemonEntity>>
 
     @Query("SELECT * FROM PockemonTable WHERE id = :id")
-    fun getPockemonById(id: Int): LiveData<List<PockemonEntity>>
+    fun getPockemonById(id: Int): LiveData<PockemonEntity>
 
     @Upsert
     suspend fun upsert(pockemons: PockemonEntity)

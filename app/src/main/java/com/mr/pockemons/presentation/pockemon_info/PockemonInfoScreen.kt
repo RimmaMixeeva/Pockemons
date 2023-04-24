@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.navigation.NavController
@@ -15,6 +16,7 @@ import com.mr.pockemons.presentation.navigation.Screens
 @Composable
 fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
 
+    val pockemon = viewModel.fetchPockemonInfoById().observeAsState()
     Column() {
         Text(text = "BACK", modifier = Modifier.clickable {
             navController.navigate(Screens.Main.route) {
@@ -24,7 +26,7 @@ fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
         }
         })
 
-          Text(text = "name")
+          Text(text =  pockemon.value?.name?:"")
 //        Text(text = pockemon.types)
 //        Text(text = pockemon.weight.toString())
 //        Text(text = pockemon.height.toString())

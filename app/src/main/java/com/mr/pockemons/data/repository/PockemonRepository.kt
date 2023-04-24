@@ -12,7 +12,7 @@ class PockemonRepository(private val pockemonDao: PockemonDao) {
 
     val readAllData: LiveData<List<PockemonEntity>> = pockemonDao.getAllPockemons()
 
-    fun readAllRegex(id: Int): LiveData<List<PockemonEntity>> {
+    fun readById(id: Int): LiveData<PockemonEntity> {
         return pockemonDao.getPockemonById(id)
     }
     suspend fun upsert(pockemon: PockemonEntity){

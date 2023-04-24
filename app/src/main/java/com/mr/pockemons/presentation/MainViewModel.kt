@@ -12,11 +12,16 @@ import com.mr.pockemons.domain.model.main.PockemonEntity
 import kotlinx.coroutines.*
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
+    var currentPockemon = 0
     val apiInterface = ApiInterface.create()
     private val repository: PockemonRepository
     lateinit var pockemonsLiveData: LiveData<List<PockemonEntity>>
+
     fun fetchAllPockemons():  LiveData<List<PockemonEntity>> {
        return repository.readAllData
+    }
+    fun fetchPockemonInfoById(): LiveData<PockemonEntity> {
+            return repository.readById(currentPockemon)
     }
 
     init {
@@ -33,10 +38,12 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             delay(5000)
             if (pockemonsLiveData.value == null) {
             val pockemonList = apiInterface.getPockemons().results
-
-            Log.i("pockemonList", pockemonList.toString())
             pockemonList.forEachIndexed {
-                    index, pockemon -> repository.upsert(PockemonEntity(index+1, pockemon.name, "null", "null", 0, 0))
+                    index, pockemon ->
+                var info = apiInterface.getPockemonById(
+                    pockemon.url.removePrefix("https://pokeapi.co/api/v2/pokemon/").dropLast(1).toInt()
+                )
+                repository.upsert(PockemonEntity(index+1, pockemon.name, info.sprites.front_default, info.types.joinToString(separator = ", "), info.weight, info.height))
             }
         }
         }
@@ -48,4 +55,5 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnected
     }
+
 }

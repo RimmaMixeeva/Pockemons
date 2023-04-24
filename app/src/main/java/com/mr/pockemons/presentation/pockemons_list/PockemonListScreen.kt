@@ -53,6 +53,7 @@ fun PockemonListScreen(navController: NavController, viewModel: MainViewModel) {
                     .padding(horizontal = 8.dp, vertical = 8.dp)
                     .fillMaxWidth()
                     .clickable {
+                        viewModel.currentPockemon = item.id
                         navController.navigate(Screens.Pockemon.route)
                     },
                 elevation = 2.dp,
