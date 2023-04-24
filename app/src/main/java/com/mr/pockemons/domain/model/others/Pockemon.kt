@@ -1,5 +1,6 @@
 package com.mr.pockemons.domain.model.others
 
+import com.mr.pockemons.domain.model.main.PockemonEntity
 import com.mr.pockemons.domain.model.others.*
 
 data class Pockemon(
@@ -21,4 +22,13 @@ data class Pockemon(
     val stats: List<Stat>,
     val types: List<Type>,
     val weight: Int
-)
+) {
+    fun toPockemonEntity(inId:Int,inName: String): PockemonEntity = PockemonEntity(
+        id = inId,
+        name = inName,
+        image = this.sprites.front_default,
+        types = this.types.joinToString(separator = ", "),
+        weight = this.weight,
+        height = this.height,
+    )
+}

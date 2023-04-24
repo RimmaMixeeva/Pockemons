@@ -1,6 +1,6 @@
 package com.mr.pockemons.data.API
 
-import com.mr.pockemons.domain.model.PockemonList
+import com.mr.pockemons.domain.model.others.PockemonList
 import com.mr.pockemons.domain.model.others.Pockemon
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

@@ -1,4 +1,4 @@
-package com.mr.pockemons.domain.model
+package com.mr.pockemons.domain.model.others
 
 data class PockemonList(
 val count: Int,
