@@ -4,19 +4,24 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.mr.pockemons.data.API.ApiInterface
 import com.mr.pockemons.data.data_source.AppDatabase
 import com.mr.pockemons.data.repository.PockemonRepository
 import com.mr.pockemons.domain.model.main.PockemonEntity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.launch
+
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
     var currentPockemon = 0
     val apiInterface = ApiInterface.create()
     private val repository: PockemonRepository
+
     var pockemonsLiveData: LiveData<List<PockemonEntity>>
+    val showDialog = MutableLiveData<Boolean>(false)
 
     fun fetchAllPockemons():  LiveData<List<PockemonEntity>> {
        return repository.readAllData

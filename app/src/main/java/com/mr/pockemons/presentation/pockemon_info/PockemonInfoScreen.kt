@@ -44,71 +44,96 @@ import com.mr.pockemons.ui.theme.Orange
 fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
 
     val pockemon = viewModel.fetchPockemonInfoById().observeAsState()
-    Image( painter = painterResource(id = R.drawable.pockemon), contentDescription ="background",
+    Image(
+        painter = painterResource(id = R.drawable.pockemon), contentDescription = "background",
         modifier = Modifier
             .fillMaxSize()
-            .scale(1.5f))
-    Card (
+            .scale(1.5f)
+    )
+    Card(
         modifier = Modifier
             .padding(horizontal = 30.dp, vertical = 80.dp)
             .fillMaxWidth(),
         elevation = 2.dp,
         backgroundColor = Orange,
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-            ) {
-        Column {
-        Text(text = pockemon.value?.name ?: "", textAlign = TextAlign.Center, color = Color.White,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 20.dp), fontSize = 40.sp,
-            fontWeight = FontWeight.Bold
-        )
-        Card (
-            modifier = Modifier
-                .padding(bottom = 20.dp, start = 20.dp, end = 20.dp)
-                .fillMaxSize(),
-            elevation = 2.dp,
-            backgroundColor = Color.White
-        ) {
-        Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceAround,
-        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(horizontalAlignment = Alignment.Start, modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 40.dp)) {
-            Text(text = "types: " + pockemon.value?.types, fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text(text = "height: " + pockemon.value?.height.toString() + " cm", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-            Text(text = "weight: " + pockemon.value?.weight?.toString() + " kg", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        }
-        PockemonImage(url = pockemon.value?.image ?: "", viewModel)
-
-            Card (
+        Column {
+            Text(
+                text = pockemon.value?.name ?: "",
+                textAlign = TextAlign.Center,
+                color = Color.White,
                 modifier = Modifier
-                    .padding(vertical = 10.dp, horizontal = 40.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(vertical = 20.dp),
+                fontSize = 40.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Card(
+                modifier = Modifier
+                    .padding(bottom = 20.dp, start = 20.dp, end = 20.dp)
+                    .fillMaxSize(),
                 elevation = 2.dp,
-                backgroundColor = Orange
+                backgroundColor = Color.White
             ) {
-        Text(text = "BACK", textAlign = TextAlign.Center, fontSize = 20.sp, color = Color.White, modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .clickable {
-                navController.navigate(Screens.Main.route) {
-
-                    popUpTo(Screens.Main.route) {
-
-                        inclusive = true
-
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.Start, modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 40.dp)
+                    ) {
+                        Text(
+                            text = "types: " + pockemon.value?.types,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "height: " + pockemon.value?.height.toString() + " cm",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "weight: " + pockemon.value?.weight?.toString() + " kg",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
                     }
+                    PockemonImage(url = pockemon.value?.image ?: "", viewModel)
 
+                    Card(
+                        modifier = Modifier
+                            .padding(vertical = 10.dp, horizontal = 40.dp)
+                            .fillMaxWidth(),
+                        elevation = 2.dp,
+                        backgroundColor = Orange
+                    ) {
+                        Text(text = "BACK",
+                            textAlign = TextAlign.Center,
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .clickable {
+                                    navController.navigate(Screens.Main.route) {
+
+                                        popUpTo(Screens.Main.route) {
+
+                                            inclusive = true
+
+                                        }
+
+                                    }
+                                })
+                    }
                 }
-            })}
-        }
 
 
+            }
         }
+
     }
-
-}
 }

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.mr.pockemons.presentation.components.MyDialog
 import com.mr.pockemons.presentation.navigation.SetUpNavGraph
 
 
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         mainViewModel = ViewModelProvider(this)[MainViewModel::class.java]
         setContent {
+            MyDialog(mainViewModel)
             navController = rememberNavController()
             SetUpNavGraph(navController = navController, mainViewModel)
         }

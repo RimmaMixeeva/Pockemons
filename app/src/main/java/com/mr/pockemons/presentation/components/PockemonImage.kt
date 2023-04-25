@@ -1,30 +1,15 @@
 package com.mr.pockemons.presentation.components
 
-import android.os.Build.VERSION.SDK_INT
 import androidx.compose.foundation.*
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.ImageLoader
 import coil.compose.*
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
-import coil.size.Size
-import com.mr.pockemons.R
 import com.mr.pockemons.presentation.MainViewModel
 
 @Composable
@@ -39,7 +24,9 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
             .clip(CircleShape)
             .clickable {
                 hasNet = viewModel.isInternetAvailable(viewModel.getApplication())
-            }
+                if(!hasNet) {
+                    viewModel.showDialog.value = true
+                }}
     ) {
         var painter: AsyncImagePainter
         if(hasNet) {
@@ -57,11 +44,7 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
 
         Image(painter = painter, contentDescription = "Pockemon Image",  modifier = Modifier.fillMaxSize())
 
-        if(painterState is AsyncImagePainter.State.Loading){
-            GifImage()
-        }
-
-        if(painterState is AsyncImagePainter.State.Error){
+        if(painterState is AsyncImagePainter.State.Loading || painterState is AsyncImagePainter.State.Error){
             GifImage()
         }
 

@@ -15,25 +15,31 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import com.mr.pockemons.presentation.MainViewModel
+import com.mr.pockemons.presentation.components.MyDialog
 import com.mr.pockemons.presentation.navigation.Screens
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
 fun PockemonListScreen(navController: NavController, viewModel: MainViewModel) {
 
-    val pockemonList = viewModel.fetchAllPockemons().observeAsState(arrayListOf())
+    var pockemonList = viewModel.fetchAllPockemons().observeAsState(arrayListOf())
     var checkTheNet by remember {
-        mutableStateOf(false)
+        mutableStateOf(viewModel.isInternetAvailable(viewModel.getApplication()))
     }
     if (pockemonList.value.isEmpty()) {
-        Column() {
-            if (checkTheNet) {
-                Text(text = "Turn on the WIFI")
-            } else {
                 Text(text = "LOADING..." )
-            }
+        if (!checkTheNet) {
+           LaunchedEffect(Unit) {
+               delay(3000)
+               viewModel.showDialog.value = true
+           }
+        } else {
+            viewModel.launchJson()
         }
     }
     else {
