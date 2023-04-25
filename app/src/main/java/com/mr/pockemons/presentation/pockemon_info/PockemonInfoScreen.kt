@@ -36,6 +36,7 @@ import com.mr.pockemons.presentation.MainViewModel
 import com.mr.pockemons.presentation.components.PockemonImage
 import com.mr.pockemons.presentation.navigation.Screens
 import com.mr.pockemons.R
+import com.mr.pockemons.presentation.navigation.Wallpaper
 
 import com.mr.pockemons.ui.theme.Orange
 
@@ -44,12 +45,6 @@ import com.mr.pockemons.ui.theme.Orange
 fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
 
     val pockemon = viewModel.fetchPockemonInfoById().observeAsState()
-    Image(
-        painter = painterResource(id = R.drawable.pockemon), contentDescription = "background",
-        modifier = Modifier
-            .fillMaxSize()
-            .scale(1.5f)
-    )
     Card(
         modifier = Modifier
             .padding(horizontal = 30.dp, vertical = 80.dp)

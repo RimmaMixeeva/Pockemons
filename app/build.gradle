@@ -53,6 +53,10 @@ android {
 }
 
 dependencies {
+
+    //SplashScreen
+    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
+
     //Dialog
     implementation 'androidx.ui:ui-layout:0.1.0-dev02'
     implementation 'androidx.ui:ui-material:0.1.0-dev02'

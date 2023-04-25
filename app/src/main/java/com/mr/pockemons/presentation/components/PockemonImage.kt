@@ -17,6 +17,9 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
     var hasNet by remember {
         mutableStateOf(viewModel.isInternetAvailable(viewModel.getApplication()))
     }
+    var imageWasLoaded by remember {
+        mutableStateOf(false)
+    }
     Box(
         modifier = Modifier
             .height(150.dp)
@@ -24,7 +27,7 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
             .clip(CircleShape)
             .clickable {
                 hasNet = viewModel.isInternetAvailable(viewModel.getApplication())
-                if(!hasNet) {
+                if(!hasNet && !imageWasLoaded) {
                     viewModel.showDialog.value = true
                 }}
     ) {
@@ -46,6 +49,8 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
 
         if(painterState is AsyncImagePainter.State.Loading || painterState is AsyncImagePainter.State.Error){
             GifImage()
+        } else {
+            imageWasLoaded = true
         }
 
     }
