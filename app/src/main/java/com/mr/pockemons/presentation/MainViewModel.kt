@@ -4,52 +4,36 @@ import android.app.Application
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.mr.pockemons.data.API.ApiInterface
-import com.mr.pockemons.data.data_source.AppDatabase
-import com.mr.pockemons.data.repository.PockemonRepository
-import com.mr.pockemons.domain.model.main.PockemonEntity
+import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.mr.pockemons.PockemonApp
+import com.mr.pockemons.data.remote.ApiInterface
+import com.mr.pockemons.data.local.AppDatabase
+import com.mr.pockemons.data.local.PockemonEntity
+import com.mr.pockemons.data.repository.DataRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
+class MainViewModel @Inject constructor(private val application: PockemonApp,
+                                        private val repository: DataRepository,
+                                        private val pager: Pager<Int, PockemonEntity>
+): ViewModel() {
 
-class MainViewModel(application: Application): AndroidViewModel(application) {
-    var currentPockemon = 0
-    val apiInterface = ApiInterface.create()
-    private val repository: PockemonRepository
+    val beerPagingFlow = pager
+        .flow
+        .cachedIn(viewModelScope)
 
-    var pockemonsLiveData: LiveData<List<PockemonEntity>>
-    val showDialog = MutableLiveData<Boolean>(false)
+    var currentPockemonId: Int = 0
 
-    fun fetchAllPockemons():  LiveData<List<PockemonEntity>> {
-       return repository.readAllData
-    }
+    var showDialog = MutableLiveData(false)
+
     fun fetchPockemonInfoById(): LiveData<PockemonEntity> {
-            return repository.readById(currentPockemon)
-    }
-
-    init {
-        val pockemonDao = AppDatabase.getDbInstance(application).pockemonDao()
-        repository = PockemonRepository(pockemonDao)
-        pockemonsLiveData = repository.readAllData
-        if (isInternetAvailable(application)) {
-        launchJson()
-         }
-    }
-
-    fun launchJson() {
-        viewModelScope.launch {
-            val pockemonList = apiInterface.getPockemons().results
-            pockemonList.forEachIndexed {
-                    index, pockemon ->
-                var info = apiInterface.getPockemonById(
-                    pockemon.url.removePrefix("https://pokeapi.co/api/v2/pokemon/").dropLast(1).toInt()
-                )
-                repository.upsert(PockemonEntity(index+1, pockemon.name, info.sprites.front_default, info.types.map{item -> item.type.name}.joinToString(", "), info.weight, info.height))
-            }
-        }
+        return  repository.readById(currentPockemonId)
     }
 
     fun isInternetAvailable(context: Context): Boolean {
@@ -59,5 +43,9 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
         val capabilities = connectivityManager.getNetworkCapabilities(network)
         return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
+    }
+
+    fun getApplication(): PockemonApp {
+        return application
     }
 }

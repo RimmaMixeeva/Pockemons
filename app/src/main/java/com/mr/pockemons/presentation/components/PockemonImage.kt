@@ -10,6 +10,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.*
 import coil.request.ImageRequest
+import com.mr.pockemons.R
 import com.mr.pockemons.presentation.MainViewModel
 
 @Composable
@@ -48,7 +49,7 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
         Image(painter = painter, contentDescription = "Pockemon Image",  modifier = Modifier.fillMaxSize())
 
         if(painterState is AsyncImagePainter.State.Loading || painterState is AsyncImagePainter.State.Error){
-            GifImage()
+            GifImage(R.drawable.loading)
         } else {
             imageWasLoaded = true
         }

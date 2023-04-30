@@ -18,9 +18,10 @@ import coil.decode.ImageDecoderDecoder
 import coil.request.ImageRequest
 import coil.size.Size
 import com.mr.pockemons.R
+import javax.inject.Inject
 
 @Composable
-fun GifImage() {
+fun GifImage (image: Int) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .components {
@@ -33,7 +34,7 @@ fun GifImage() {
         .build()
     Image(
         painter = rememberAsyncImagePainter(
-            ImageRequest.Builder(context).data(data = R.drawable.loading).apply(block = {
+            ImageRequest.Builder(context).data(data = image).apply(block = {
                 size(Size.ORIGINAL)
             }).build(), imageLoader = imageLoader
         ),

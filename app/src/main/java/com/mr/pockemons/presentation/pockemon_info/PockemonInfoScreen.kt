@@ -39,11 +39,11 @@ import com.mr.pockemons.R
 import com.mr.pockemons.presentation.navigation.Wallpaper
 
 import com.mr.pockemons.ui.theme.Orange
+import javax.inject.Inject
 
 
 @Composable
-fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
-
+fun PockemonInfoScreen (navController: NavController, viewModel: MainViewModel) {
     val pockemon = viewModel.fetchPockemonInfoById().observeAsState()
     Card(
         modifier = Modifier

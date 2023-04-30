@@ -7,15 +7,18 @@ import androidx.compose.ui.window.Popup
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.paging.compose.LazyPagingItems
+import com.mr.pockemons.data.local.PockemonEntity
 import com.mr.pockemons.presentation.MainViewModel
 import com.mr.pockemons.presentation.pockemon_info.PockemonInfoScreen
+//import com.mr.pockemons.presentation.pockemon_info.PockemonInfoScreen
 import com.mr.pockemons.presentation.pockemons_list.PockemonListScreen
 import java.time.zone.ZoneOffsetTransition
 
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel,
+    viewModel: MainViewModel
 ) {
   NavHost(navController = navController , startDestination = Screens.Main.route) {
       composable(
