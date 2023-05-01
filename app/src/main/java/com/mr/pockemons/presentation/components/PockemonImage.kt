@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.*
 import coil.request.ImageRequest
 import com.mr.pockemons.R
@@ -17,7 +16,7 @@ import com.mr.pockemons.presentation.MainViewModel
 @Composable
 fun PockemonImage(url: String, viewModel: MainViewModel) {
     var hasNet by remember {
-        mutableStateOf(viewModel.isInternetAvailable(viewModel.getApplication()))
+        mutableStateOf(viewModel.isInternetAvailable())
     }
     var imageWasLoaded by remember {
         mutableStateOf(false)
@@ -28,13 +27,13 @@ fun PockemonImage(url: String, viewModel: MainViewModel) {
             .width(150.dp)
             .clip(CircleShape)
             .clickable {
-                hasNet = viewModel.isInternetAvailable(viewModel.getApplication())
+                hasNet = viewModel.isInternetAvailable()
                 if (!hasNet && !imageWasLoaded) {
                     viewModel.showDialog.value = true
                 }
             }
     ) {
-        var painter: AsyncImagePainter
+        val painter: AsyncImagePainter
         if (hasNet) {
             painter =
                 rememberAsyncImagePainter(

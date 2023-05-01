@@ -1,15 +1,9 @@
 package com.mr.pockemons.presentation.pockemons_list
 
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
@@ -19,22 +13,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.mr.pockemons.presentation.MainViewModel
-import com.mr.pockemons.presentation.navigation.Screens
 import kotlinx.coroutines.delay
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
+
 
 
 @Composable
 fun PockemonListScreen(navController: NavController, viewModel: MainViewModel) {
 
-    var pockemons = viewModel.beerPagingFlow.collectAsLazyPagingItems()
+    val pockemons = viewModel.beerPagingFlow.collectAsLazyPagingItems()
 
     var checkTheNet by remember {
         mutableStateOf(viewModel.isInternetAvailable())

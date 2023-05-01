@@ -16,7 +16,7 @@ fun Pockemon.toPockemonEntity(): PockemonEntity {
 }
 
 fun PockemonListEntry.toPockemonEntity(): PockemonEntity {
-    var tmpId = this.url.removePrefix("https://pokeapi.co/api/v2/pokemon/").dropLast(1).toInt()
+    val tmpId = this.url.removePrefix("https://pokeapi.co/api/v2/pokemon/").dropLast(1).toInt()
     return PockemonEntity(
         id = tmpId.toDbId(),
         name = this.name,

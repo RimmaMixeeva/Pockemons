@@ -4,9 +4,7 @@ package com.mr.pockemons.presentation
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import androidx.lifecycle.*
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.Pager
 import androidx.paging.cachedIn
 import com.mr.pockemons.PockemonApp
@@ -16,7 +14,6 @@ import com.mr.pockemons.data.local.PockemonEntity
 import com.mr.pockemons.data.mappers.toFetchId
 import com.mr.pockemons.data.mappers.toPockemonEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,7 +22,7 @@ class MainViewModel @Inject constructor(
     private val apiInterface: ApiInterface,
     private val application: PockemonApp,
     private val database: AppDatabase,
-    private val pager: Pager<Int, PockemonEntity>,
+    pager: Pager<Int, PockemonEntity>,
 ) : ViewModel() {
 
     var scrollPosition = 0
@@ -50,15 +47,11 @@ class MainViewModel @Inject constructor(
                 capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR))
     }
 
-    fun getApplication(): PockemonApp {
-        return application
-    }
-
     fun launchJson(id: Int?, name: String?) {
         viewModelScope.launch {
             if (id!= null && name != null) {
             val pockemon =  try {
-                apiInterface.getPockemonById(id.toFetchId()).toPockemonEntity()
+               apiInterface.getPockemonById(id.toFetchId()).toPockemonEntity()
             } catch (e: Exception) {
                 PockemonEntity.failedPockemon(id, name)
             }

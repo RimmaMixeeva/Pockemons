@@ -7,7 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.room.Room
 import com.mr.pockemons.PockemonApp
 import com.mr.pockemons.data.local.AppDatabase
-import com.mr.pockemons.data.local.PockemonDao
 import com.mr.pockemons.data.local.PockemonEntity
 import com.mr.pockemons.data.remote.ApiInterface
 import com.mr.pockemons.data.remote.PockemonRemoteMediator
