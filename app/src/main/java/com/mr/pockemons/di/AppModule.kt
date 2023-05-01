@@ -11,7 +11,6 @@ import com.mr.pockemons.data.local.PockemonDao
 import com.mr.pockemons.data.local.PockemonEntity
 import com.mr.pockemons.data.remote.ApiInterface
 import com.mr.pockemons.data.remote.PockemonRemoteMediator
-import com.mr.pockemons.data.repository.DataRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +32,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context):AppDatabase{
+    fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
@@ -52,25 +51,13 @@ object AppModule {
 
     }
 
-    @Provides
-    @Singleton
-    fun provideDao(database: AppDatabase): PockemonDao {
-        return database.pockemonDao()
-    }
-
-    @Provides
-    @Singleton
-    fun provideRepository(pockemonDao: PockemonDao): DataRepository {
-        return DataRepository(pockemonDao)
-    }
-
 
     @OptIn(ExperimentalPagingApi::class)
     @Provides
     @Singleton
     fun provideBeerPager(database: AppDatabase, api: ApiInterface): Pager<Int, PockemonEntity> {
         return Pager(
-            config = PagingConfig(pageSize = 20),
+            config = PagingConfig(pageSize = 20, prefetchDistance = 15, initialLoadSize = 60),
             remoteMediator = PockemonRemoteMediator(
                 pockemonDb = database,
                 pockemonApi = api

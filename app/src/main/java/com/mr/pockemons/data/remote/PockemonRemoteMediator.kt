@@ -8,6 +8,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.mr.pockemons.data.local.AppDatabase
 import com.mr.pockemons.data.local.PockemonEntity
+import com.mr.pockemons.data.mappers.toFetchId
 import com.mr.pockemons.data.mappers.toPockemonEntity
 import retrofit2.HttpException
 import java.io.IOException
@@ -47,7 +48,14 @@ class PockemonRemoteMediator(
                 if(loadType == LoadType.REFRESH){
                     pockemonDb.pockemonDao().clearAll()
                 }
-                val pockemonEntities = pockemons.map { pockemonApi.getPockemonById(it.toPockemonEntity().id).toPockemonEntity() }
+                val pockemonEntities = pockemons.map {
+                    var fetchId = it.toPockemonEntity().id
+                    try {
+                        pockemonApi.getPockemonById(fetchId).toPockemonEntity()
+                    } catch (e: Exception) {
+                        PockemonEntity.failedPockemon(it.toPockemonEntity().id, it.name)
+                    }
+                    }
                 pockemonDb.pockemonDao().upsertAll(pockemonEntities)
             }
             MediatorResult.Success(

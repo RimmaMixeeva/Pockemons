@@ -4,19 +4,19 @@ import com.google.gson.annotations.SerializedName
 
 data class Versions(
     @SerializedName("generation-i")
-    val generationi: com.mr.pockemons.data.remote.model.GenerationI,
+    val generationi: GenerationI,
     @SerializedName("generation-ii")
-    val generationii: com.mr.pockemons.data.remote.model.GenerationIi,
+    val generationii: GenerationIi,
     @SerializedName("generation-iii")
-    val generationiii: com.mr.pockemons.data.remote.model.GenerationIii,
+    val generationiii: GenerationIii,
     @SerializedName("generation-iv")
-    val generationiv: com.mr.pockemons.data.remote.model.GenerationIv,
+    val generationiv: GenerationIv,
     @SerializedName("generation-v")
-    val generationv: com.mr.pockemons.data.remote.model.GenerationV,
+    val generationv: GenerationV,
     @SerializedName("generation-vi")
-    val generationvi: com.mr.pockemons.data.remote.model.GenerationVi,
+    val generationvi: GenerationVi,
     @SerializedName("generation-vii")
-    val generationvii: com.mr.pockemons.data.remote.model.GenerationVii,
+    val generationvii: GenerationVii,
     @SerializedName("generation-viii")
-    val generationviii: com.mr.pockemons.data.remote.model.GenerationViii
+    val generationviii: GenerationViii
 )

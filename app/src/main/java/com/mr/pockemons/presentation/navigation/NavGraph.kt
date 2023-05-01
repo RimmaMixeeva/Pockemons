@@ -18,18 +18,18 @@ import java.time.zone.ZoneOffsetTransition
 @Composable
 fun SetUpNavGraph(
     navController: NavHostController,
-    viewModel: MainViewModel
+    mainViewModel: MainViewModel
 ) {
-  NavHost(navController = navController , startDestination = Screens.Main.route) {
-      composable(
-          route = Screens.Main.route
-      ) {
-          PockemonListScreen(navController, viewModel)
-      }
-      composable(
-          route = Screens.Pockemon.route
-      ) {
-         PockemonInfoScreen(navController, viewModel)
-      }
-  }
+    NavHost(navController = navController, startDestination = Screens.Main.route) {
+        composable(
+            route = Screens.Main.route
+        ) {
+            PockemonListScreen(navController, mainViewModel)
+        }
+        composable(
+            route = Screens.Pockemon.route
+        ) {
+            PockemonInfoScreen(navController, mainViewModel)
+        }
+    }
 }

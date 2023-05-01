@@ -3,9 +3,9 @@ package com.mr.pockemons.data.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class GenerationIii(
-    val emerald: com.mr.pockemons.data.remote.model.Emerald,
+    val emerald: Emerald,
     @SerializedName("firered-leafgreen")
-    val fireredleafgreen: com.mr.pockemons.data.remote.model.FireredLeafgreen,
+    val fireredleafgreen: FireredLeafgreen,
     @SerializedName("ruby-sapphire")
-    val rubysapphire: com.mr.pockemons.data.remote.model.RubySapphire
+    val rubysapphire: RubySapphire
 )

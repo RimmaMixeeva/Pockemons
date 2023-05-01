@@ -13,20 +13,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.mr.pockemons.presentation.MainViewModel
 import com.mr.pockemons.ui.theme.Orange
 
 
-
 @Composable
 fun MyDialog(viewModel: MainViewModel) {
-    var opened =  viewModel.showDialog.observeAsState()
+    var opened = viewModel.showDialog.observeAsState()
     val context = LocalContext.current
     if (opened.value == true) {
         AlertDialog(
             onDismissRequest = {
-                                 viewModel.showDialog.value = false
-                               },
+                viewModel.showDialog.value = false
+            },
             title = {
                 Text(text = "Ooops. Network Error")
             },

@@ -21,7 +21,7 @@ import com.mr.pockemons.R
 import javax.inject.Inject
 
 @Composable
-fun GifImage (image: Int) {
+fun GifImage(image: Int) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .components {
@@ -39,6 +39,8 @@ fun GifImage (image: Int) {
             }).build(), imageLoader = imageLoader
         ),
         contentDescription = null,
-        modifier = Modifier.fillMaxWidth().scale(2f)
+        modifier = Modifier
+            .fillMaxWidth()
+            .scale(2f)
     )
 }

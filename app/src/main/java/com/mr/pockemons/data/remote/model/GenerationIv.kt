@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName
 
 data class GenerationIv(
     @SerializedName("diamond-pearl")
-    val diamondpearl: com.mr.pockemons.data.remote.model.DiamondPearl,
+    val diamondpearl: DiamondPearl,
     @SerializedName("heartgold-soulsilver")
-    val heartgoldsoulsilver: com.mr.pockemons.data.remote.model.HeartgoldSoulsilver,
-    val platinum: com.mr.pockemons.data.remote.model.Platinum
+    val heartgoldsoulsilver: HeartgoldSoulsilver,
+    val platinum: Platinum
 )

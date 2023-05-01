@@ -1,50 +1,32 @@
 package com.mr.pockemons.presentation.pockemon_info
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.mr.pockemons.presentation.MainViewModel
 import com.mr.pockemons.presentation.components.PockemonImage
 import com.mr.pockemons.presentation.navigation.Screens
-import com.mr.pockemons.R
-import com.mr.pockemons.presentation.navigation.Wallpaper
 
 import com.mr.pockemons.ui.theme.Orange
-import javax.inject.Inject
 
 
 @Composable
-fun PockemonInfoScreen (navController: NavController, viewModel: MainViewModel) {
-    val pockemon = viewModel.fetchPockemonInfoById().observeAsState()
+fun PockemonInfoScreen(navController: NavController, viewModel: MainViewModel) {
+    val pockemon = viewModel.getPockemonInfoById().observeAsState()
     Card(
         modifier = Modifier
             .padding(horizontal = 30.dp, vertical = 80.dp)
@@ -55,7 +37,7 @@ fun PockemonInfoScreen (navController: NavController, viewModel: MainViewModel) 
     ) {
         Column {
             Text(
-                text = pockemon.value?.name ?: "",
+                text = pockemon.value?.name ?: "none",
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 modifier = Modifier
@@ -101,7 +83,31 @@ fun PockemonInfoScreen (navController: NavController, viewModel: MainViewModel) 
 
                     Card(
                         modifier = Modifier
-                            .padding(vertical = 10.dp, horizontal = 40.dp)
+                            .padding(vertical = 5.dp, horizontal = 40.dp)
+                            .fillMaxWidth(),
+                        elevation = 2.dp,
+                        backgroundColor = Orange
+                    ) {
+                    if (pockemon.value?.types == "failed to load") {
+                        Text(text = "RELOAD",
+                            textAlign = TextAlign.Center,
+                            fontSize = 20.sp,
+                            color = Color.White,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .clickable {
+                                    if (viewModel.isInternetAvailable()) {
+                                        viewModel.launchJson(pockemon.value?.id, pockemon.value?.name)
+
+                                    } else {
+                                        viewModel.showDialog.value = true
+                                    }
+                                })
+                    }}
+
+                    Card(
+                        modifier = Modifier
+                            .padding(vertical = 5.dp, horizontal = 40.dp)
                             .fillMaxWidth(),
                         elevation = 2.dp,
                         backgroundColor = Orange
@@ -114,13 +120,9 @@ fun PockemonInfoScreen (navController: NavController, viewModel: MainViewModel) 
                                 .padding(horizontal = 8.dp)
                                 .clickable {
                                     navController.navigate(Screens.Main.route) {
-
                                         popUpTo(Screens.Main.route) {
-
                                             inclusive = true
-
                                         }
-
                                     }
                                 })
                     }

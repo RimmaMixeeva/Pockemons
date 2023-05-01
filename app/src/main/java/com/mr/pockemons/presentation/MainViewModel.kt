@@ -1,29 +1,34 @@
 package com.mr.pockemons.presentation
 
-import android.app.Application
+
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.Pager
 import androidx.paging.cachedIn
-import androidx.paging.map
 import com.mr.pockemons.PockemonApp
 import com.mr.pockemons.data.remote.ApiInterface
 import com.mr.pockemons.data.local.AppDatabase
 import com.mr.pockemons.data.local.PockemonEntity
-import com.mr.pockemons.data.repository.DataRepository
+import com.mr.pockemons.data.mappers.toFetchId
+import com.mr.pockemons.data.mappers.toPockemonEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val application: PockemonApp,
-                                        private val repository: DataRepository,
-                                        private val pager: Pager<Int, PockemonEntity>
-): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val apiInterface: ApiInterface,
+    private val application: PockemonApp,
+    private val database: AppDatabase,
+    private val pager: Pager<Int, PockemonEntity>,
+) : ViewModel() {
 
+    var scrollPosition = 0
     val beerPagingFlow = pager
         .flow
         .cachedIn(viewModelScope)
@@ -32,13 +37,13 @@ class MainViewModel @Inject constructor(private val application: PockemonApp,
 
     var showDialog = MutableLiveData(false)
 
-    fun fetchPockemonInfoById(): LiveData<PockemonEntity> {
-        return  repository.readById(currentPockemonId)
+    fun getPockemonInfoById(): LiveData<PockemonEntity> {
+        return database.pockemonDao().getPockemonById(currentPockemonId)
     }
 
-    fun isInternetAvailable(context: Context): Boolean {
+    fun isInternetAvailable (): Boolean {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork
         val capabilities = connectivityManager.getNetworkCapabilities(network)
         return capabilities != null && (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
@@ -47,5 +52,18 @@ class MainViewModel @Inject constructor(private val application: PockemonApp,
 
     fun getApplication(): PockemonApp {
         return application
+    }
+
+    fun launchJson(id: Int?, name: String?) {
+        viewModelScope.launch {
+            if (id!= null && name != null) {
+            val pockemon =  try {
+                apiInterface.getPockemonById(id.toFetchId()).toPockemonEntity()
+            } catch (e: Exception) {
+                PockemonEntity.failedPockemon(id, name)
+            }
+            database.pockemonDao().upsertAll(listOf(pockemon))
+            }
+        }
     }
 }
