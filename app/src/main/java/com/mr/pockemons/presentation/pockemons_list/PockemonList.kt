@@ -60,7 +60,7 @@ fun PockemonList(pockemons: LazyPagingItems<PockemonEntity>, navController: NavC
                         )
                     ) {
                         Text(
-                            text = item.id.toString() + " " + item.name,
+                            text = item.name,
                             style = MaterialTheme.typography.h5
                         )
                     }
